@@ -5,7 +5,7 @@ use nom::bytes::complete::tag;
 use nom::character::complete;
 use nom::error::Error;
 
-use crate::literal::ipv4::{dot_and_octet, ipv4};
+use crate::ipv4::{dot_and_octet, ipv4};
 
 #[derive(PartialEq, Debug)]
 pub struct NetPrefix {
@@ -30,17 +30,6 @@ fn prefix(input: &str) -> IResult<&str, u8> {
     let (input, num) = u8_less_than_33(input)?;
 
     Ok((input, num))
-}
-
-pub fn net_prefix(i: &str) -> IResult<&str, NetPrefix> {
-    let (i, r) = nom::branch::alt((
-        net_prefix_short_1,
-        net_prefix_short_2,
-        net_prefix_short_3,
-        net_prefix_no_short
-    ))(i)?;
-
-    Ok((i, r))
 }
 
 fn net_prefix_short_1(i: &str) -> IResult<&str, NetPrefix> {
@@ -83,8 +72,27 @@ fn net_prefix_no_short(i: &str) -> IResult<&str, NetPrefix> {
     Ok((i, NetPrefix { address, prefix }))
 }
 
+pub fn net_prefix(i: &str) -> IResult<&str, NetPrefix> {
+    let (i, r) = nom::branch::alt((
+        net_prefix_short_1,
+        net_prefix_short_2,
+        net_prefix_short_3,
+        net_prefix_no_short
+    ))(i)?;
+
+    Ok((i, r))
+}
+
 mod test {
-    use crate::literal::net_prefix::{net_prefix, net_prefix_no_short, net_prefix_short_1, net_prefix_short_2, net_prefix_short_3, NetPrefix, prefix, u8_less_than_33};
+    use crate::net_prefix::{
+        net_prefix,
+        net_prefix_no_short,
+        net_prefix_short_1,
+        net_prefix_short_2,
+        net_prefix_short_3,
+        NetPrefix,
+        prefix, u8_less_than_33
+    };
 
     #[test]
     fn test_u8_less_than_33() {

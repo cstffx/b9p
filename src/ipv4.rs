@@ -22,8 +22,7 @@ pub fn ipv4(i: &str) -> IResult<&str, Ipv4Addr> {
 }
 
 mod test {
-    use crate::literal::ipv4::ipv4;
-    use crate::literal::ipv4::dot_and_octet;
+    use crate::ipv4::{ipv4, dot_and_octet};
     use std::net::Ipv4Addr;
 
     macro_rules! build_ipv4_addr {
