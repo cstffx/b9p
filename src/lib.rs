@@ -3,9 +3,10 @@ use nom::{bytes, IResult};
 use nom::character::complete;
 
 mod ipv4;
+mod net_prefix;
 
 pub struct Block {
-    name: String,
+    _name: String,
 }
 
 /// Reconoce un valor booleano
@@ -69,7 +70,7 @@ pub fn integer(i: &str) -> IResult<&str, u32> {
 
 pub fn block(i:&str) -> IResult<&str, Block>{
     Ok((i, Block {
-        name: String::from("Hola mundo")
+        _name: String::from("Hola mundo")
     }))
 }
 
