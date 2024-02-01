@@ -28,7 +28,6 @@ pub fn boolean(i: &str) -> IResult<&str, bool> {
     Ok((i, b))
 }
 
-
 #[cfg(test)]
 mod tests {
     use crate::boolean::boolean;

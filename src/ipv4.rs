@@ -21,6 +21,7 @@ pub fn ipv4(i: &str) -> IResult<&str, Ipv4Addr> {
     Ok((i, ip_address))
 }
 
+#[cfg(test)]
 mod test {
     use crate::ipv4::{ipv4, dot_and_octet};
     use std::net::Ipv4Addr;

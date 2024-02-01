@@ -83,6 +83,7 @@ pub fn net_prefix(i: &str) -> IResult<&str, NetPrefix> {
     Ok((i, r))
 }
 
+#[cfg(test)]
 mod test {
     use crate::net_prefix::{
         net_prefix,
