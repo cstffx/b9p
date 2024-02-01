@@ -5,7 +5,7 @@ use nom::bytes::complete::tag;
 use nom::character::complete;
 use nom::error::Error;
 
-use crate::ipv4::{dot_and_octet, ipv4};
+use crate::literal::ipv4::{dot_and_octet, ipv4};
 
 #[derive(PartialEq, Debug)]
 pub struct NetPrefix {
@@ -18,7 +18,7 @@ fn u8_less_than_33(input: &str) -> IResult<&str, u8> {
     if num > 32 {
         Err(nom::Err::Error(Error {
             input,
-            code: ErrorKind::TooLarge
+            code: ErrorKind::TooLarge,
         }))
     } else {
         Ok((input, num))
@@ -84,48 +84,48 @@ fn net_prefix_no_short(i: &str) -> IResult<&str, NetPrefix> {
 }
 
 mod test {
-    use crate::net_prefix::{net_prefix, net_prefix_no_short, net_prefix_short_1, net_prefix_short_2, net_prefix_short_3, NetPrefix, prefix, u8_less_than_33};
+    use crate::literal::net_prefix::{net_prefix, net_prefix_no_short, net_prefix_short_1, net_prefix_short_2, net_prefix_short_3, NetPrefix, prefix, u8_less_than_33};
 
     #[test]
     fn test_u8_less_than_33() {
-        assert_eq!( Ok(("", 0)), prefix("/0"));
-        assert_eq!( Ok(("", 32)), u8_less_than_33("32"));
+        assert_eq!(Ok(("", 0)), prefix("/0"));
+        assert_eq!(Ok(("", 32)), u8_less_than_33("32"));
         assert!(u8_less_than_33("33").is_err())
     }
 
     #[test]
-    fn test_net_prefix_short_1(){
-        assert_eq!( Ok(("", make_net_prefix("127.0.0.0", 24))), net_prefix_short_1("127/24"));
+    fn test_net_prefix_short_1() {
+        assert_eq!(Ok(("", make_net_prefix("127.0.0.0", 24))), net_prefix_short_1("127/24"));
     }
 
     #[test]
-    fn test_net_prefix_short_2(){
-        assert_eq!( Ok(("", make_net_prefix("127.1.0.0", 24))), net_prefix_short_2("127.1/24"));
+    fn test_net_prefix_short_2() {
+        assert_eq!(Ok(("", make_net_prefix("127.1.0.0", 24))), net_prefix_short_2("127.1/24"));
     }
 
     #[test]
-    fn test_net_prefix_short_3(){
-        assert_eq!( Ok(("", make_net_prefix("127.1.1.0", 24))), net_prefix_short_3("127.1.1/24"));
+    fn test_net_prefix_short_3() {
+        assert_eq!(Ok(("", make_net_prefix("127.1.1.0", 24))), net_prefix_short_3("127.1.1/24"));
     }
 
     #[test]
-    fn test_net_prefix_no_short(){
-        assert_eq!( Ok(("", make_net_prefix("127.1.1.1", 24))), net_prefix_no_short("127.1.1.1/24"));
+    fn test_net_prefix_no_short() {
+        assert_eq!(Ok(("", make_net_prefix("127.1.1.1", 24))), net_prefix_no_short("127.1.1.1/24"));
     }
 
     #[test]
     fn test_prefix() {
-        assert_eq!( Ok(("", 0)), prefix("/0"));
-        assert_eq!( Ok(("", 32)), prefix("/32"));
+        assert_eq!(Ok(("", 0)), prefix("/0"));
+        assert_eq!(Ok(("", 32)), prefix("/32"));
         assert!(prefix("/33").is_err())
     }
 
     #[test]
     fn test_net_prefix() {
-        assert_eq!( Ok(("", make_net_prefix("127.0.0.0", 24))), net_prefix("127/24"));
-        assert_eq!( Ok(("", make_net_prefix("127.16.0.0", 24))), net_prefix("127.16/24"));
-        assert_eq!( Ok(("", make_net_prefix("127.16.64.0", 24))), net_prefix("127.16.64/24"));
-        assert_eq!( Ok(("", make_net_prefix("127.16.64.1", 24))), net_prefix("127.16.64.1/24"));
+        assert_eq!(Ok(("", make_net_prefix("127.0.0.0", 24))), net_prefix("127/24"));
+        assert_eq!(Ok(("", make_net_prefix("127.16.0.0", 24))), net_prefix("127.16/24"));
+        assert_eq!(Ok(("", make_net_prefix("127.16.64.0", 24))), net_prefix("127.16.64/24"));
+        assert_eq!(Ok(("", make_net_prefix("127.16.64.1", 24))), net_prefix("127.16.64.1/24"));
 
         assert!(net_prefix("127.0.0.1").is_err())
     }
@@ -136,7 +136,7 @@ mod test {
         }
         NetPrefix {
             prefix,
-            address: ip.parse().unwrap()
+            address: ip.parse().unwrap(),
         }
     }
 }

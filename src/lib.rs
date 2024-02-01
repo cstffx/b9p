@@ -2,8 +2,7 @@ use bytes::complete::tag;
 use nom::{bytes, IResult};
 use nom::character::complete;
 
-mod ipv4;
-mod net_prefix;
+mod literal;
 
 pub struct Block {
     _name: String,
