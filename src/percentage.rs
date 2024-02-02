@@ -15,7 +15,7 @@ mod tests {
     fn test_percentage() {
         assert_eq!(Ok(("", 0)), percentage("0%"));
         assert_eq!(Ok(("", 4294967295)), percentage("4294967295%"));
-        assert!(percentage("4294967296").is_err());
+        assert!(percentage("4294967296%").is_err());
         assert!(percentage("-1%").is_err());
         assert!(percentage("-0%").is_err());
     }
