@@ -91,10 +91,6 @@ mod test {
             seconds: 5,
         };
 
-        let result = ttl_unit(input);
-        match result {
-            Ok((_, ttl)) => assert_eq!(ttl, expected),
-            Err(_) => panic!("Error parsing input"),
-        }
+        assert_eq!(ttl_unit(input).unwrap(), ("", expected));
     }
 }
