@@ -30,7 +30,7 @@ pub fn boolean(i: &str) -> IResult<&str, bool> {
 
 #[cfg(test)]
 mod tests {
-    use crate::boolean::boolean;
+    use crate::boolean::*;
 
     #[test]
     fn test_boolean() {

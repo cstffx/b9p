@@ -2,7 +2,9 @@ use std::net::Ipv4Addr;
 
 use nom::bytes::complete::tag;
 use nom::character::complete;
+use nom::error::{Error, ErrorKind};
 use nom::IResult;
+use nom::multi::separated_list0;
 
 pub fn dot_and_octet(input: &str) -> IResult<&str, u8> {
     let (input, _) = tag(".")(input)?;
@@ -11,19 +13,25 @@ pub fn dot_and_octet(input: &str) -> IResult<&str, u8> {
     Ok((input, num))
 }
 
-pub fn ipv4(i: &str) -> IResult<&str, Ipv4Addr> {
-    let (i, octet) = complete::u8(i)?;
-    let (i, octets): (&str, Vec<u8>) = nom::multi::many_m_n(3, 3, dot_and_octet)(i)?;
+pub fn ipv4(input: &str) -> IResult<&str, Ipv4Addr> {
+    let (input, octets) = separated_list0(
+        tag("."),
+        complete::u8
+    )(input)?;
 
-    let octets_array: [u8; 4] = [octet, octets[0], octets[1], octets[2]];
-    let ip_address = Ipv4Addr::from(octets_array);
-
-    Ok((i, ip_address))
+    if octets.len() == 4 {
+        Ok((input, Ipv4Addr::from([octets[0], octets[1], octets[2], octets[3]])))
+    } else {
+        Err(nom::Err::Error(Error {
+            input,
+            code: ErrorKind::Fail,
+        }))
+    }
 }
 
 #[cfg(test)]
 mod test {
-    use crate::ipv4::{ipv4, dot_and_octet};
+    use crate::ipv4::*;
     use std::net::Ipv4Addr;
 
     macro_rules! build_ipv4_addr {

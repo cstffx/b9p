@@ -11,7 +11,7 @@ pub fn integer(i: &str) -> IResult<&str, u32> {
 
 #[cfg(test)]
 mod tests {
-    use crate::integer::{integer, MAX_INTEGER, MIN_INTEGER};
+    use crate::integer::*;
 
     #[test]
     fn test_integer() {

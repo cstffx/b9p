@@ -9,7 +9,7 @@ pub fn percentage(input: &str) -> IResult<&str, u32> {
 
 #[cfg(test)]
 mod tests {
-    use crate::percentage::percentage;
+    use crate::percentage::*;
 
     #[test]
     fn test_percentage() {
